@@ -88,6 +88,9 @@ function App() {
           </Paper>
         </Grid>
       </Grid>
+      {options.homeCity != '' && (
+        <WeatherCard city={options.homeCity} tempScale={options.tempScale} />
+      )}
       {cities.map((city, index) => (
         <WeatherCard
           onDelete={() => handleDeleteCity(index)}

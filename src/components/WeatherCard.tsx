@@ -4,7 +4,7 @@ import { fetchOpenWeatherData, WeatherData, WeatherTempScale } from '../utils/ap
 
 interface WeatherCardContainerProps {
   children: React.ReactNode;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 export const WeatherCardContainer = ({ children, onDelete }: WeatherCardContainerProps) => {
@@ -13,9 +13,11 @@ export const WeatherCardContainer = ({ children, onDelete }: WeatherCardContaine
       <Card>
         <CardContent>{children}</CardContent>
         <CardActions>
-          <Button color="secondary" onClick={onDelete}>
-            Delete
-          </Button>
+          {onDelete && (
+            <Button color="secondary" onClick={onDelete}>
+              Delete
+            </Button>
+          )}
         </CardActions>
       </Card>
     </Box>
@@ -26,7 +28,7 @@ type WeatherCardState = 'loading' | 'ready' | 'error';
 
 interface WeatherCardProps {
   city: string;
-  onDelete: () => void;
+  onDelete?: () => void;
   tempScale: WeatherTempScale;
 }
 
