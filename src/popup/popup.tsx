@@ -9,6 +9,7 @@ import {
   getStoredOptions,
   LocalStorageOptions,
   setStoredCities,
+  setStoredOptions,
 } from '../utils/storage';
 
 function App() {
@@ -46,29 +47,51 @@ function App() {
     });
   };
 
+  const handleTempScaleChange = () => {
+    const updatedOptions: LocalStorageOptions = {
+      ...options,
+      tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric',
+    };
+    setStoredOptions(updatedOptions).then(() => {
+      setOptions(updatedOptions);
+    });
+  };
+
   if (!options) {
     return null;
   }
 
   return (
     <Box mx={'8px'} my={'16px'}>
-      <Grid container>
-        <Paper>
-          <Box px={'15px'} py={'5px'}>
-            <InputBase
-              placeholder="Add a city name"
-              value={cityInput}
-              onChange={(e) => setCityInput(e.target.value)}
-            />
-            <IconButton onClick={handleAddCity}>
-              <AddIcon />
-            </IconButton>
-          </Box>
-        </Paper>
+      <Grid container justifyContent={'space-evenly'}>
+        <Grid>
+          <Paper>
+            <Box px={'15px'} py={'5px'}>
+              <InputBase
+                placeholder="Add a city name"
+                value={cityInput}
+                onChange={(e) => setCityInput(e.target.value)}
+              />
+              <IconButton onClick={handleAddCity}>
+                <AddIcon />
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid>
+          <Paper>
+            <Box py={'4px'}>
+              <IconButton onClick={handleTempScaleChange}>
+                {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
       </Grid>
       {cities.map((city, index) => (
         <WeatherCard
           onDelete={() => handleDeleteCity(index)}
+          tempScale={options.tempScale}
           key={`${city}-${index}`}
           city={city}
         />
