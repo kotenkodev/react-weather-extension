@@ -1,12 +1,22 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { fetchOpenWeatherData, WeatherData } from '../api/weather';
 
-export const WeatherCardContainer = ({ children }: { children: React.ReactNode }) => {
+interface WeatherCardContainerProps {
+  children: React.ReactNode;
+  onDelete: () => void;
+}
+
+export const WeatherCardContainer = ({ children, onDelete }: WeatherCardContainerProps) => {
   return (
     <Box mx={'4px'} my={'16px'}>
       <Card>
         <CardContent>{children}</CardContent>
+        <CardActions>
+          <Button color="secondary" onClick={onDelete}>
+            Delete
+          </Button>
+        </CardActions>
       </Card>
     </Box>
   );
@@ -14,7 +24,12 @@ export const WeatherCardContainer = ({ children }: { children: React.ReactNode }
 
 type WeatherCardState = 'loading' | 'ready' | 'error';
 
-export default function WeatherCard({ city }: { city: string }) {
+interface WeatherCardProps {
+  city: string;
+  onDelete: () => void;
+}
+
+export default function WeatherCard({ city, onDelete }: WeatherCardProps) {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [weatherState, setWeatherState] = useState<WeatherCardState>('loading');
 
@@ -31,7 +46,7 @@ export default function WeatherCard({ city }: { city: string }) {
 
   if (weatherState == 'error' || weatherState == 'loading') {
     return (
-      <WeatherCardContainer>
+      <WeatherCardContainer onDelete={onDelete}>
         <Typography variant="h5">
           {weatherState == 'loading' ? 'Loading...' : 'Error loading weather data for this city.'}
         </Typography>
@@ -40,7 +55,7 @@ export default function WeatherCard({ city }: { city: string }) {
   }
 
   return (
-    <WeatherCardContainer>
+    <WeatherCardContainer onDelete={onDelete}>
       <Typography variant="h5">{city}</Typography>
       <Typography variant="body1">{Math.round(weatherData.main.temp)}</Typography>
       <Typography variant="body1">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
