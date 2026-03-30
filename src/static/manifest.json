@@ -1,0 +1,27 @@
+{
+  "name": "Weather App Extension",
+  "description": "A Chrome extension that provides real-time weather updates, forecasts, and weather-related notifications directly in your browser. Easily check current conditions and plan your day with accurate, up-to-date weather information.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Weather App",
+    "default_icon": "icon.png"
+  },
+  "permissions": ["storage"],
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}
