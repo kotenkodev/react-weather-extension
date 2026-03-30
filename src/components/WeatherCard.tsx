@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { fetchOpenWeatherData, WeatherData } from '../api/weather';
+import { fetchOpenWeatherData, WeatherData } from '../utils/api';
 
 interface WeatherCardContainerProps {
   children: React.ReactNode;
@@ -39,7 +39,7 @@ export default function WeatherCard({ city, onDelete }: WeatherCardProps) {
         setWeatherData(data);
         setWeatherState('ready');
       })
-      .catch((error) => {
+      .catch(() => {
         setWeatherState('error');
       });
   }, []);

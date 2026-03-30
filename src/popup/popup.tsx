@@ -1,26 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './popup.css';
 import WeatherCard from '../components/WeatherCard';
 import { InputBase, IconButton, Paper, Box, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { getStoredCities, setStoredCities } from '../utils/storage';
 
 function App() {
   const [cities, setCities] = useState<string[]>(['Toronto', 'London', 'Error']);
   const [cityInput, setCityInput] = useState<string>('');
 
+  useEffect(() => {
+    getStoredCities().then((cities) => {
+      setCities(cities);
+    });
+  }, []);
+
   const handleAddCity = () => {
     if (cityInput === '') {
       return;
     }
-    setCities([...cities, cityInput]);
-    setCityInput('');
+    const updatedCities = [...cities, cityInput];
+    setStoredCities(updatedCities).then(() => {
+      setCities(updatedCities);
+      setCityInput('');
+    });
   };
 
   const handleDeleteCity = (index: number) => {
     const newCities = [...cities];
     newCities.splice(index, 1);
-    setCities(newCities);
+
+    setStoredCities(newCities).then(() => {
+      setCities(newCities);
+      setCityInput('');
+    });
   };
 
   return (
