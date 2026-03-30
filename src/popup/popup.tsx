@@ -4,15 +4,24 @@ import './popup.css';
 import WeatherCard from '../components/WeatherCard';
 import { InputBase, IconButton, Paper, Box, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { getStoredCities, setStoredCities } from '../utils/storage';
+import {
+  getStoredCities,
+  getStoredOptions,
+  LocalStorageOptions,
+  setStoredCities,
+} from '../utils/storage';
 
 function App() {
   const [cities, setCities] = useState<string[]>(['Toronto', 'London', 'Error']);
+  const [options, setOptions] = useState<LocalStorageOptions | null>(null);
   const [cityInput, setCityInput] = useState<string>('');
 
   useEffect(() => {
     getStoredCities().then((cities) => {
       setCities(cities);
+    });
+    getStoredOptions().then((options) => {
+      setOptions(options);
     });
   }, []);
 
@@ -36,6 +45,10 @@ function App() {
       setCityInput('');
     });
   };
+
+  if (!options) {
+    return null;
+  }
 
   return (
     <Box mx={'8px'} my={'16px'}>

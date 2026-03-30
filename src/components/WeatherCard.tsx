@@ -56,7 +56,9 @@ export default function WeatherCard({ city, onDelete }: WeatherCardProps) {
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography variant="h5">{city}</Typography>
+      <Typography sx={{ textTransform: 'capitalize' }} variant="h5">
+        {city}
+      </Typography>
       <Typography variant="body1">{Math.round(weatherData.main.temp)}</Typography>
       <Typography variant="body1">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
     </WeatherCardContainer>
