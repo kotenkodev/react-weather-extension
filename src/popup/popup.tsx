@@ -1,23 +1,20 @@
-import React, { useEffect } from "react";
-import { createRoot } from "react-dom/client";
-import "./popup.css";
-import { fetchOpenWeatherData } from "../api/weather";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import './popup.css';
+import WeatherCard from '../components/WeatherCard';
 
 const App: React.FC<{}> = () => {
-  useEffect(() => {
-    fetchOpenWeatherData("Toronto")
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  return <div></div>;
+    return (
+        <div>
+            <WeatherCard city="London" />
+            <WeatherCard city="Toronto" />
+            <WeatherCard city="Error" />
+            <img src="icon.png" />
+        </div>
+    );
 };
 
-const container = document.createElement("div");
+const container = document.createElement('div');
 document.body.appendChild(container);
 const root = createRoot(container);
 root.render(<App />);
