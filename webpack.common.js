@@ -1,7 +1,10 @@
 const path = require("path");
+const webpack = require("webpack");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+require("dotenv").config();
 
 module.exports = {
   entry: {
@@ -43,6 +46,13 @@ module.exports = {
       ],
     }),
     ...getHtmlPlugins(["popup", "options"]),
+    new webpack.DefinePlugin({
+      "process.env": {
+        OPEN_WEATHER_API_KEY: JSON.stringify(
+          process.env.OPEN_WEATHER_API_KEY,
+        ),
+      },
+    }),
   ],
   output: {
     filename: "[name].js",
