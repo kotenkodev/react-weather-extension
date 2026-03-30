@@ -4,8 +4,11 @@ import './options.css';
 import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
 import { getStoredOptions, LocalStorageOptions, setStoredOptions } from '../utils/storage';
 
+type FormState = 'ready' | 'saving';
+
 const App = () => {
   const [options, setOptions] = useState<LocalStorageOptions | null>(null);
+  const [formState, setFormState] = useState<FormState>('ready');
 
   useEffect(() => {
     getStoredOptions().then((options) => {
@@ -21,13 +24,19 @@ const App = () => {
   };
 
   const handleSave = () => {
-    console.log(options);
-    setStoredOptions(options);
+    setFormState('saving');
+    setStoredOptions(options).then(() => {
+      setTimeout(() => {
+        setFormState('ready');
+      }, 1000);
+    });
   };
 
   if (!options) {
     return null;
   }
+
+  const isFieldDisabld = formState === 'saving';
 
   return (
     <Box mx={'10%'} my={'2%'}>
@@ -44,11 +53,17 @@ const App = () => {
                 value={options.homeCity}
                 fullWidth
                 placeholder="Enter a home city name"
+                disabled={isFieldDisabld}
               />
             </Grid>
             <Grid>
-              <Button onClick={handleSave} variant="contained" color="primary">
-                Save
+              <Button
+                disabled={isFieldDisabld}
+                onClick={handleSave}
+                variant="contained"
+                color="primary"
+              >
+                {formState === 'ready' ? 'Save' : 'Saving...'}
               </Button>
             </Grid>
           </Grid>
