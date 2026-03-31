@@ -11,6 +11,8 @@ import {
   setStoredCities,
   setStoredOptions,
 } from '../utils/storage';
+import { PictureInPicture as PictureInPictureIcon } from '@mui/icons-material';
+import { Messages } from '../utils/messages';
 
 function App() {
   const [cities, setCities] = useState<string[]>(['Toronto', 'London', 'Error']);
@@ -47,13 +49,43 @@ function App() {
     });
   };
 
-  const handleTempScaleChange = () => {
-    const updatedOptions: LocalStorageOptions = {
-      ...options,
-      tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric',
-    };
-    setStoredOptions(updatedOptions).then(() => {
-      setOptions(updatedOptions);
+  const handleTempScaleClick = () => {
+    setOptions((prevOptions) => {
+      if (!prevOptions) {
+        return null;
+      }
+      const updatedOptions: LocalStorageOptions = {
+        ...prevOptions,
+        tempScale: prevOptions.tempScale === 'metric' ? 'imperial' : 'metric',
+      };
+      setStoredOptions(updatedOptions);
+      return updatedOptions;
+    });
+  };
+
+  const handleOverlayClick = () => {
+    chrome.tabs.query(
+      {
+        active: true,
+        currentWindow: true,
+      },
+      (tabs) => {
+        if (tabs.length > 0) {
+          chrome.tabs.sendMessage(tabs[0].id, Messages.TOGGLE_OVERLAY);
+        }
+      },
+    );
+
+    setOptions((prevOptions) => {
+      if (!prevOptions) {
+        return null;
+      }
+      const updatedOptions: LocalStorageOptions = {
+        ...prevOptions,
+        hasAutoOverlay: !prevOptions.hasAutoOverlay,
+      };
+      setStoredOptions(updatedOptions);
+      return updatedOptions;
     });
   };
 
@@ -81,8 +113,17 @@ function App() {
         <Grid>
           <Paper>
             <Box py={'4px'}>
-              <IconButton onClick={handleTempScaleChange}>
+              <IconButton onClick={handleTempScaleClick}>
                 {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid>
+          <Paper>
+            <Box py={'4px'}>
+              <IconButton onClick={handleOverlayClick}>
+                <PictureInPictureIcon color={options.hasAutoOverlay ? 'primary' : 'disabled'} />
               </IconButton>
             </Box>
           </Paper>
