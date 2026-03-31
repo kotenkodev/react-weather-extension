@@ -1,6 +1,11 @@
-import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { fetchOpenWeatherData, WeatherData, WeatherTempScale } from '../utils/api';
+import {
+  fetchOpenWeatherData,
+  getWeatherIconSrc,
+  WeatherData,
+  WeatherTempScale,
+} from '../utils/api';
 import './WeatherCard.css';
 
 interface WeatherCardContainerProps {
@@ -61,13 +66,25 @@ export default function WeatherCard({ city, onDelete, tempScale }: WeatherCardPr
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography sx={{ textTransform: 'capitalize' }} className="weatherCard-title">
-        {city}
-      </Typography>
-      <Typography className="weatherCard-body">{weatherData.main.temp.toFixed(2)}</Typography>
-      <Typography className="weatherCard-body">
-        Feels like: {weatherData.main.feels_like.toFixed(2)}
-      </Typography>
+      <Grid container justifyContent={'space-around'}>
+        <Grid>
+          <Typography sx={{ textTransform: 'capitalize' }} className="weatherCard-title">
+            {city}
+          </Typography>
+          <Typography className="weatherCard-temp">{weatherData.main.temp.toFixed(2)}</Typography>
+          <Typography className="weatherCard-body">
+            Feels like: {weatherData.main.feels_like.toFixed(2)}
+          </Typography>
+        </Grid>
+        <Grid>
+          {weatherData.weather.length > 0 && (
+            <>
+              <img src={getWeatherIconSrc(weatherData.weather[0].icon)} />
+              <Typography className="weatherCard-body">{weatherData.weather[0].main}</Typography>
+            </>
+          )}
+        </Grid>
+      </Grid>
     </WeatherCardContainer>
   );
 }
