@@ -1,3 +1,4 @@
+// contentScript.tsx
 import React, { useState, useEffect } from 'react';
 import WeatherCard from '../components/WeatherCard';
 import './contentScript.css';
@@ -31,26 +32,40 @@ const App = () => {
     });
   }, []);
 
-  if (!options) {
+  if (!options || !isActive) {
     return null;
   }
 
   return (
-    <>
-      {isActive && (
-        <Card className="overlayCard">
-          <WeatherCard
-            city={options.homeCity}
-            tempScale={options.tempScale}
-            onDelete={() => setIsActive(false)}
-          />
-        </Card>
-      )}
-    </>
+    <div
+      className="overlay-wrapper"
+      onMouseDown={(e) => {
+        const el = e.currentTarget;
+        const rect = el.getBoundingClientRect();
+        const offX = e.clientX - rect.left;
+        const offY = e.clientY - rect.top;
+        const onMove = (e: MouseEvent) => {
+          el.style.left = e.clientX - offX + 'px';
+          el.style.top = e.clientY - offY + 'px';
+        };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', () => window.removeEventListener('mousemove', onMove), {
+          once: true,
+        });
+        e.preventDefault();
+      }}
+    >
+      <WeatherCard
+        city={options.homeCity}
+        tempScale={options.tempScale}
+        onDelete={() => setIsActive(false)}
+      />
+    </div>
   );
 };
 
 const root = document.createElement('div');
+root.id = 'weather-extension-root';
 document.body.appendChild(root);
 
 ReactDOM.render(<App />, root);

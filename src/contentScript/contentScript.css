@@ -1,9 +1,22 @@
-.overlayCard {
+#weather-extension-root {
+  all: initial;
   position: fixed;
-  left: 5%;
-  top: 15%;
-  max-width: 240px;
-  max-height: 240px;
-  background-color: #f5f5f5;
+  top: 0;
+  left: 0;
   z-index: 99999;
+  pointer-events: none;
+}
+
+.overlay-wrapper {
+  position: fixed;
+  top: 15%;
+  left: 5%;
+  width: 340px;
+  pointer-events: all;
+  cursor: grab;
+  user-select: none;
+}
+
+.overlay-wrapper:active {
+  cursor: grabbing;
 }
