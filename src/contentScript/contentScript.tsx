@@ -22,6 +22,12 @@ const App = () => {
       if (message === Messages.TOGGLE_OVERLAY) {
         setIsActive((prev) => !prev);
       }
+      if (message === Messages.TEMP_SCALE_CHANGED) {
+        setOptions((prev) => ({
+          ...prev,
+          tempScale: prev.tempScale === 'metric' ? 'imperial' : 'metric',
+        }));
+      }
     });
   }, []);
 

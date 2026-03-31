@@ -1,6 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { fetchOpenWeatherData, WeatherData, WeatherTempScale } from '../utils/api';
+import './WeatherCard.css';
 
 interface WeatherCardContainerProps {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ export const WeatherCardContainer = ({ children, onDelete }: WeatherCardContaine
         <CardContent>{children}</CardContent>
         <CardActions>
           {onDelete && (
-            <Button color="secondary" onClick={onDelete}>
+            <Button className="weatherCard-body" color="secondary" onClick={onDelete}>
               Delete
             </Button>
           )}
@@ -50,7 +51,8 @@ export default function WeatherCard({ city, onDelete, tempScale }: WeatherCardPr
   if (weatherState == 'error' || weatherState == 'loading') {
     return (
       <WeatherCardContainer onDelete={onDelete}>
-        <Typography variant="h5">
+        <Typography className="weatherCard-title">{city}</Typography>
+        <Typography className="weatherCard-body">
           {weatherState == 'loading' ? 'Loading...' : 'Error loading weather data for this city.'}
         </Typography>
       </WeatherCardContainer>
@@ -59,11 +61,13 @@ export default function WeatherCard({ city, onDelete, tempScale }: WeatherCardPr
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography sx={{ textTransform: 'capitalize' }} variant="h5">
+      <Typography sx={{ textTransform: 'capitalize' }} className="weatherCard-title">
         {city}
       </Typography>
-      <Typography variant="body1">{Math.round(weatherData.main.temp)}</Typography>
-      <Typography variant="body1">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
+      <Typography className="weatherCard-body">{Math.round(weatherData.main.temp)}</Typography>
+      <Typography className="weatherCard-body">
+        Feels like: {Math.round(weatherData.main.feels_like)}
+      </Typography>
     </WeatherCardContainer>
   );
 }
