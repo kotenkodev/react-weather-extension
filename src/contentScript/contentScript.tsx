@@ -1,9 +1,7 @@
-// contentScript.tsx
 import React, { useState, useEffect } from 'react';
 import WeatherCard from '../components/WeatherCard';
 import './contentScript.css';
 import ReactDOM from 'react-dom';
-import { Card } from '@mui/material';
 import { getStoredOptions, LocalStorageOptions } from '../utils/storage';
 import { Messages } from '../utils/messages';
 

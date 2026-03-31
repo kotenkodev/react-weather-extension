@@ -15,12 +15,12 @@ interface WeatherCardContainerProps {
 
 export const WeatherCardContainer = ({ children, onDelete }: WeatherCardContainerProps) => {
   return (
-    <Box mx={'4px'} my={'16px'}>
+    <Box mx={'4px'} my={'8px'}>
       <Card>
         <CardContent>{children}</CardContent>
         <CardActions>
           {onDelete && (
-            <Button className="weatherCard-body" color="secondary" onClick={onDelete}>
+            <Button size="small" className="weatherCard-body" color="secondary" onClick={onDelete}>
               Delete
             </Button>
           )}

@@ -105,11 +105,11 @@ function App() {
   }
 
   return (
-    <Box mx={'8px'} my={'16px'}>
-      <Grid container justifyContent={'space-evenly'}>
+    <Box mx={'8px'} my={'8px'}>
+      <Grid container justifyContent={'space-evenly'} alignItems={'center'}>
         <Grid>
           <Paper>
-            <Box px={'15px'} py={'5px'}>
+            <Box px={'8px'} py={'4px'} display={'flex'} alignItems={'center'}>
               <InputBase
                 placeholder="Add a city name"
                 value={cityInput}
