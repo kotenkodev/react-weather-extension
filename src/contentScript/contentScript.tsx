@@ -7,9 +7,13 @@ import { getStoredOptions, LocalStorageOptions } from '../utils/storage';
 
 const App = () => {
   const [options, setOptions] = useState<LocalStorageOptions | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   useEffect(() => {
-    getStoredOptions().then((options) => setOptions(options));
+    getStoredOptions().then((options) => {
+      setOptions(options);
+      setIsActive(options.hasAutoOverlay);
+    });
   }, []);
 
   if (!options) {
@@ -17,9 +21,18 @@ const App = () => {
   }
 
   return (
-    <Card className="overlayCard">
-      <WeatherCard city={options.homeCity} tempScale={options.tempScale} />;
-    </Card>
+    <>
+      {isActive && (
+        <Card className="overlayCard">
+          <WeatherCard
+            city={options.homeCity}
+            tempScale={options.tempScale}
+            onDelete={() => setIsActive(false)}
+          />
+          ;
+        </Card>
+      )}
+    </>
   );
 };
 

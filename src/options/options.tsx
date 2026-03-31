@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './options.css';
-import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
 import { getStoredOptions, LocalStorageOptions, setStoredOptions } from '../utils/storage';
 
 type FormState = 'ready' | 'saving';
@@ -20,6 +20,13 @@ const App = () => {
     setOptions({
       ...options,
       homeCity,
+    });
+  };
+
+  const handleOverlayChange = (hasAutoOverlay: boolean) => {
+    setOptions({
+      ...options,
+      hasAutoOverlay,
     });
   };
 
@@ -53,6 +60,14 @@ const App = () => {
                 value={options.homeCity}
                 fullWidth
                 placeholder="Enter a home city name"
+                disabled={isFieldDisabld}
+              />
+            </Grid>
+            <Grid>
+              <Typography variant="body1">Auto toggle overlay on webpage load:</Typography>
+              <Switch
+                onChange={(event, checked) => handleOverlayChange(checked)}
+                checked={options.hasAutoOverlay}
                 disabled={isFieldDisabld}
               />
             </Grid>
