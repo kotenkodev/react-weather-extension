@@ -64,9 +64,9 @@ export default function WeatherCard({ city, onDelete, tempScale }: WeatherCardPr
       <Typography sx={{ textTransform: 'capitalize' }} className="weatherCard-title">
         {city}
       </Typography>
-      <Typography className="weatherCard-body">{Math.round(weatherData.main.temp)}</Typography>
+      <Typography className="weatherCard-body">{weatherData.main.temp.toFixed(2)}</Typography>
       <Typography className="weatherCard-body">
-        Feels like: {Math.round(weatherData.main.feels_like)}
+        Feels like: {weatherData.main.feels_like.toFixed(2)}
       </Typography>
     </WeatherCardContainer>
   );
